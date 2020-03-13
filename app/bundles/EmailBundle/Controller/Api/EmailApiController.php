@@ -132,7 +132,11 @@ class EmailApiController extends CommonApiController
             $cleanTokens = [];
 
             foreach ($tokens as $token => $value) {
-                $value = InputHelper::clean($value);
+                if (stripos($value, 'rawhtml://') === 0) {
+                    $value = substr($value, 7);
+                } else {
+                    $value = InputHelper::clean($value);
+                }
                 if (!preg_match('/^{.*?}$/', $token)) {
                     $token = '{'.$token.'}';
                 }
